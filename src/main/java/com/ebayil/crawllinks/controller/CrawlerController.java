@@ -44,7 +44,7 @@ public class CrawlerController implements ApplicationContextAware {
     @ApiOperation(httpMethod = "POST", value = "An API to crawl page links - Async", notes = "An API to to crawl page links - Async", response = Node.class)
     public Node setNewCrawlAsync(@RequestBody InputDto input) throws Exception {
         CrawlServiceAsync crawler = applicationContext.getBean(CrawlServiceAsync.class, input.getStartUrl(), input.getDepth());
-        crawler.startAsync().get();
+        crawler.startAsync();
         return crawler.getRootNode();
     }
 

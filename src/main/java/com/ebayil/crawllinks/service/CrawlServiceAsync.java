@@ -26,15 +26,15 @@ public class CrawlServiceAsync {
     @Autowired
     CrawlerHelper helper;
 
-    public void getPageLinks(Node node)  {
+    public List<CompletableFuture> getPageLinks(Node node)  {
         int level = node.getLevel();
         String url = node.getUrl();
+        List<CompletableFuture> futures = new ArrayList<>();
 
         links.add(url);
         Elements linksOnPage = helper.getLinksOnPage(node, maxDepth);
-        if (linksOnPage==null) return;
+        if (linksOnPage==null) return futures;
 
-        List<CompletableFuture> futures = new ArrayList<>();
         for (Element page : linksOnPage) {
             String childUrl = page.attr("abs:href");
             if (Strings.isEmpty(childUrl) || links.contains(childUrl)) continue;
@@ -43,11 +43,13 @@ public class CrawlServiceAsync {
             futures.add(CompletableFuture.runAsync( () ->getPageLinks(childNode), helper.getExecutor()));
         }
 
-        if (futures.size() > 0) CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        return futures;
     }
 
-    public CompletableFuture startAsync() {
-        return CompletableFuture.runAsync( () -> getPageLinks(rootNode), helper.getExecutor());
+    public void startAsync() {
+        List<CompletableFuture> futures = new ArrayList<>();
+        futures.addAll(getPageLinks(rootNode));
+        if (futures.size() > 0) CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }
 
 }

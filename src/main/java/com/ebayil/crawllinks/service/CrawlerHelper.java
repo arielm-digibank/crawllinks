@@ -8,14 +8,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 @Service
 @Getter
 public class CrawlerHelper {
-    private ExecutorService executor = Executors.newFixedThreadPool(10);
+    private final ExecutorService executor = new ThreadPoolExecutor(5, 10, 60, TimeUnit.SECONDS, new LinkedBlockingQueue());
 
     public Elements getLinksOnPage(Node node, int maxDepth) {
         int level = node.getLevel();
