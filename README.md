@@ -5,13 +5,30 @@ Crawl Links
 ## Usage
 
 start the Application: 
-run CrawllinksApplication
+
+from ide:
+run
+        ```
+        CrawllinksApplication
+        ```
+
+from command line:
+```
+    mvn clean package
+    java -jar target/crawllinks-0.0.1-SNAPSHOT.jar
+```
+
 open swagger: 
 http://127.0.0.1:8080/swagger-ui.html
 
 APIs (sync and a-sync) are found under crawler-controller
 
-Remark:
+## Credits
+
+Written by: Ariel Malik
+
+## Remarks
+
 Since most of the sites takes long time to read and they have many child links
 I've written some example pages
 

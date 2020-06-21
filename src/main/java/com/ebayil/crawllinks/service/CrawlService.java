@@ -18,7 +18,7 @@ public class CrawlService {
     @NonNull
     private Node rootNode;
 
-    private Set<String> links = new HashSet();
+    private Set<String> links = new HashSet<>();
 
     @Autowired
     CrawlerHelper helper;
